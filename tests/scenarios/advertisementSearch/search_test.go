@@ -1,4 +1,3 @@
-
 package advertisementSearch
 
 import (
@@ -21,7 +20,7 @@ const (
 	existingAdTitle = "Внимание"
 	searchBeginning = "Вни"
 	searchMiddle    = "има"
-	searchEnd       = "ние"
+	searchEnd       = "мание"
 )
 
 type TestSuite struct {
@@ -58,7 +57,15 @@ func (s *TestSuite) searchAndCheck(searchText string) {
 		s.loginData.Token,
 		searchText,
 	)
+	s.T().Logf(
+		"Запрос: %q, количество объявлений: %d",
+		searchText,
+		len(result.Items),
+	)
 
+	for _, item := range result.Items {
+		s.T().Logf("ID: %s, название: %s", item.ID, item.Title)
+	}
 	assertions.ContainsAdvertisementByTitle(
 		s.T(),
 		result.Items,
